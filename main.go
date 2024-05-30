@@ -7,7 +7,9 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
+	datauser "github.com/1amkaizen/BookFinderBot/user"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
@@ -136,6 +138,7 @@ func findReviewLinkByName(reviewLinks map[string]string, productName string) (st
 }
 
 func main() {
+	var users []datauser.UserData
 	// Load products from text file
 	products, err := loadProductsFromTxt("products.txt")
 	if err != nil {
@@ -201,12 +204,42 @@ func main() {
 		if update.Message == nil {
 			continue
 		}
-
+		currenttime := time.Now()
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
 
 		switch update.Message.Text {
 		case "/start":
-			msg.Text = "📚 Selamat datang di BokFinderBot! Saya adalah bot pencari Ebook & Buku. Cari Ebook apa yang Anda butuhkan? Ketikkan judul atau topik yang Anda inginkan, dan saya akan mencarikannya untuk Anda."
+
+			// Ambil data pengguna
+			userData := datauser.UserData{
+				ID:        update.Message.Chat.ID,
+				Username:  update.Message.Chat.UserName,
+				FirstName: update.Message.Chat.FirstName,
+				LastName:  update.Message.Chat.LastName,
+				Message:   update.Message.Text,
+				Timestamp: currenttime,
+			}
+			// tanggapi pesan lokasi
+			if update.Message.Location != nil {
+				userData.Latitude = update.Message.Location.Latitude
+				userData.Longitude = update.Message.Location.Longitude
+			}
+			// tanggapi pesan phone nomber
+			if update.Message.Contact != nil {
+				userData.PhoneNumber = update.Message.Contact.PhoneNumber
+			}
+
+			// Tambahkan data pengguna ke slice UserData
+			users = append(users, userData)
+
+			// Simpan data pengguna ke file HTML
+			err := datauser.SaveUserDataToHTML(users, "user_data.html")
+			if err != nil {
+				log.Println("Gagal menyimpan data pengguna:", err)
+			}
+
+			msg.Text = "📚 Selamat datang di BookFinderBot! Saya adalah bot pencari Ebook & Buku. Cari Ebook apa yang Anda butuhkan? Ketikkan judul atau topik yang Anda inginkan, dan saya akan mencarikannya untuk Anda."
+
 		case "/help":
 			msg.Text = `ℹ️ Gunakan bot ini untuk mencari Ebook & Buku. Anda cukup ketik judul atau topik yang ingin Anda cari, dan saya akan mencarikannya untuk Anda.
 
@@ -229,6 +262,31 @@ https://aigoretech.rf.gd/kirim-ulasan`
 		case "/ulasan":
 			msg.Text = "⚠️ Mohon berikan judul lengkap buku untuk mendapatkan link ulasannya.\nContoh penggunaan: /ulasan Judul Buku"
 		default:
+			// Panggil SaveUserDataToHTML untuk setiap pesan yang diterima
+			userData := datauser.UserData{
+				ID:        update.Message.Chat.ID,
+				Username:  update.Message.Chat.UserName,
+				FirstName: update.Message.Chat.FirstName,
+				LastName:  update.Message.Chat.LastName,
+				Message:   update.Message.Text,
+				Timestamp: currenttime,
+			}
+
+			// tanggapi pesan lokasi
+			if update.Message.Location != nil {
+				userData.Latitude = update.Message.Location.Latitude
+				userData.Longitude = update.Message.Location.Longitude
+			}
+
+			// tanggapi pesan phone nomber
+			if update.Message.Contact != nil {
+				userData.PhoneNumber = update.Message.Contact.PhoneNumber
+			}
+			users = append(users, userData)
+			err := datauser.SaveUserDataToHTML(users, "user_data.html")
+			if err != nil {
+				log.Println("Gagal menyimpan data pengguna:", err)
+			}
 			if strings.HasPrefix(update.Message.Text, "/ulasan ") {
 				productName := strings.TrimPrefix(update.Message.Text, "/ulasan ")
 				if link, found := findReviewLinkByName(reviewLinks, productName); found {

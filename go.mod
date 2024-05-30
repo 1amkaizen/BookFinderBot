@@ -1,4 +1,4 @@
-module BookFinderBOt
+module github.com/1amkaizen/BookFinderBot
 
 go 1.19
 
