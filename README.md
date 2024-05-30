@@ -2,8 +2,9 @@
 
 <div align="center">
 <img src="https://github.com/1amkaizen/BookFinderBot/blob/main/logobot.jpeg" alt="logo" width="300" >
-</div>>
-BookFinderBot adalah sebuh bot Telegram yang membantu pengguna mencari dan menemukan buku dan ebook berdasarkan judul atau topik yang diinginkan. Bot ini juga menyediakan fitur untuk mendapatkan link ulasan buku yang diinginkan.
+</div>
+
+BookFinderBot adalah bot Telegram yang membantu pengguna mencari dan menemukan buku dan ebook berdasarkan judul atau topik yang diinginkan. Bot ini juga menyediakan fitur untuk mendapatkan link ulasan buku yang diinginkan.
 
 ## Cara Menggunakan Bot
 
@@ -48,11 +49,15 @@ Pastikan Anda memiliki Go (Golang) terinstal di komputer Anda sebelum menjalanka
 
 ## Mengkontribusi
 
-Anda dapat berkontribusi pada pengembangan CarieBookBot dengan melakukan pull request ke repositori ini. Silakan buka issue untuk saran atau permintaan fitur.
+Anda dapat berkontribusi pada pengembangan BookFinderBot dengan melakukan pull request ke repositori ini. Silakan buka issue untuk saran atau permintaan fitur.
 
 ## Mengirim Ulasan
 
 Anda juga dapat memberikan ulasan langsung melalui [form ulasan kami](https://aigoretech.rf.gd/kirim-ulasan).
+
+## Dokumentasi Tambahan
+
+Untuk dokumentasi lebih lanjut tentang penggunaan dan pengembangan BookFinderBot, silakan lihat [dokumentasi lengkap](https://github.com/1amkaizen/BookFinderBot/wiki).
 
 ## Lisensi
 
