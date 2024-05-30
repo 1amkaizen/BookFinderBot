@@ -206,7 +206,7 @@ func main() {
 
 		switch update.Message.Text {
 		case "/start":
-			msg.Text = "📚 Selamat datang di CarieBookBot! Saya adalah bot pencari Ebook & Buku. Cari Ebook apa yang Anda butuhkan? Ketikkan judul atau topik yang Anda inginkan, dan saya akan mencarikannya untuk Anda."
+			msg.Text = "📚 Selamat datang di BokFinderBot! Saya adalah bot pencari Ebook & Buku. Cari Ebook apa yang Anda butuhkan? Ketikkan judul atau topik yang Anda inginkan, dan saya akan mencarikannya untuk Anda."
 		case "/help":
 			msg.Text = `ℹ️ Gunakan bot ini untuk mencari Ebook & Buku. Anda cukup ketik judul atau topik yang ingin Anda cari, dan saya akan mencarikannya untuk Anda.
 
