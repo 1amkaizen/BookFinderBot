@@ -14,7 +14,7 @@ COPY . .
 RUN go mod tidy
 
 # Build aplikasi Go
-RUN go build -o bot-app .
+RUN go build -o BookFinderBot .
 
 # Jalankan aplikasi
 CMD ["./BookFinderBot"]
