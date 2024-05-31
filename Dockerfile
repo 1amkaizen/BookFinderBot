@@ -1,20 +1,34 @@
-# Gunakan base image untuk Go
-FROM golang:1.19-alpine
+# Gunakan gambar dasar resmi Golang
+FROM golang:1.20 AS builder
 
 # Set environment variables
-ENV GO111MODULE=on
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64
 
-# Buat directory kerja
+# Buat direktori kerja
 WORKDIR /app
 
-# Copy semua file ke directory kerja
+# Copy kode sumber dari proyek di GitHub ke direktori kerja dalam container
 COPY . .
 
-# Unduh dependencies
+# Unduh dan instal dependensi, lalu build aplikasi
 RUN go mod tidy
+RUN go build -o /BookFinderBot .
 
-# Build aplikasi Go
-RUN go build -o BookFinderBot .
+# Gunakan gambar dasar yang lebih kecil untuk hasil akhir
+FROM alpine:latest
 
-# Jalankan aplikasi
-CMD ["./BookFinderBot"]
+# Install CA certificates
+RUN apk --no-cache add ca-certificates
+
+# Copy executable dari tahap builder
+COPY --from=builder /BookFinderBot /BookFinderBot
+
+# Set environment variable untuk token bot Telegram
+ARG TELEGRAM_BOT_TOKEN
+ENV TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+
+# Jalankan bot saat container dimulai
+CMD ["/BookFinderBot"]
