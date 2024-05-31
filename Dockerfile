@@ -8,7 +8,7 @@ ENV GO111MODULE=on \
     GOARCH=amd64
 
 # Buat direktori kerja
-WORKDIR /app
+WORKDIR /BookFinderBot
 
 # Copy kode sumber dari proyek di GitHub ke direktori kerja dalam container
 COPY . .
@@ -27,8 +27,7 @@ RUN apk --no-cache add ca-certificates
 COPY --from=builder /BookFinderBot /BookFinderBot
 
 # Set environment variable untuk token bot Telegram
-ARG TELEGRAM_BOT_TOKEN
-ENV TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+ENV TELEGRAM_BOT_TOKEN="7342847814:AAEIkAumiS5nm0Eq5yldKsbXaL_nGSAWBK4" 
 
 # Jalankan bot saat container dimulai
 CMD ["/BookFinderBot"]
